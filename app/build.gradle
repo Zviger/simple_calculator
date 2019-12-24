@@ -21,7 +21,7 @@ def getVersionCode = { ->
     def minor = versionCodeNumbers[1] as Integer
     def patch = 0
     if(versionCodeNumbers.size() == 3)
-        patch = versionCodeNumbers[2]
+        patch = versionCodeNumbers[2] as Integer
     return patch + minor * 100 + major * 10000 + 23 * 1000000
 }
 
@@ -29,7 +29,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "ru.ooplabs.simple_calculator"
-        minSdkVersion 23
+        minSdkVersion 28
         targetSdkVersion 28
         versionCode getVersionCode()
         versionName getVersionName()
@@ -41,13 +41,38 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "version"
+    productFlavors {
+        demo {
+            dimension  "version"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
+        full {
+            dimension  "version"
+            applicationIdSuffix ".full"
+            versionNameSuffix "-full"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
+
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'net.objecthunter:exp4j:0.4.8'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
 }
